@@ -1,12 +1,11 @@
 import com.mongodb.DB;
+import org.apache.commons.io.FileUtils;
 import org.apache.jackrabbit.oak.jcr.Jcr;
 import org.apache.jackrabbit.oak.plugins.document.util.MongoConnection;
 import sun.net.www.MimeTable;
 
 import javax.jcr.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -38,7 +37,7 @@ public class OakDemo {
         return repo.login(new SimpleCredentials("admin", "admin".toCharArray()));
     }
 
-    public static void saveFile() throws RepositoryException, FileNotFoundException {
+    public static void saveFile() throws RepositoryException, IOException {
         Session session = getSession();
         Node rootNode = session.getRootNode();
         File file = new File("rose.txt");
@@ -61,7 +60,13 @@ public class OakDemo {
 
         Node contentNode = gotNode.getNode("jcr:content");
 
-        contentNode.getProperty("jcr:mimeType");
+        InputStream stream = contentNode.getProperty("jcr:data").getBinary().getStream();
+
+        File targetFile = new File("src/main/resources/targetFile.tmp");
+
+        FileUtils.copyInputStreamToFile(stream, targetFile);
+
+
     }
 
 
