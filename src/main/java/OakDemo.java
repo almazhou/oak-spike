@@ -6,6 +6,7 @@ import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
 import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
 import org.apache.jackrabbit.ocm.mapper.Mapper;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
+import org.jcrom.Jcrom;
 import sun.net.www.MimeTable;
 
 import javax.jcr.*;
@@ -19,6 +20,7 @@ public class OakDemo {
     public static void main(String[] args) throws Exception {
         save();
         saveFile();
+        useJcrom();
         Session session = getSession();
 
         List<Class> classes = new ArrayList<Class>();
@@ -102,5 +104,21 @@ public class OakDemo {
 
     }
 
+    public static void useJcrom() throws RepositoryException {
+        Jcrom jcrom = new Jcrom();
+        jcrom.map(Page.class);
+        Session session = getSession();
+        Page page = new Page(2);
+        Node rootNode = session.getRootNode();
+        Node jcrom2 = rootNode.addNode("jcromParent");
+        jcrom.addNode(jcrom2,page);
+        session.save();
+
+        Node jcrom1 = rootNode.getNode("jcromParent").getNode("jcrom");
+        Page page1 = jcrom.fromNode(Page.class, jcrom1);
+
+        System.out.println(page.getId());
+        System.out.println(page1.getId());
+    }
 
 }
