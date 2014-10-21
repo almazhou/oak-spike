@@ -2,17 +2,50 @@ import com.mongodb.DB;
 import org.apache.commons.io.FileUtils;
 import org.apache.jackrabbit.oak.jcr.Jcr;
 import org.apache.jackrabbit.oak.plugins.document.util.MongoConnection;
+import org.apache.jackrabbit.ocm.manager.ObjectContentManager;
+import org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl;
+import org.apache.jackrabbit.ocm.mapper.Mapper;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import sun.net.www.MimeTable;
 
 import javax.jcr.*;
-import java.io.*;
-import java.util.Calendar;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class OakDemo {
     public static void main(String[] args) throws Exception {
         save();
         saveFile();
+        Session session = getSession();
+
+        List<Class> classes = new ArrayList<Class>();
+        classes.add(PressRelease.class); // Call this method for each persistent class
+
+        Mapper mapper = new AnnotationMapperImpl(classes);
+        ObjectContentManager ocm =  new ObjectContentManagerImpl(session, mapper);
+
+        System.out.println("Insert a press release in the repository");
+        PressRelease pressRelease = new PressRelease();
+        pressRelease.setPath("/newtutorial");
+        pressRelease.setTitle("This is the first tutorial on OCM");
+        pressRelease.setPubDate(new Date());
+        pressRelease.setContent("Many Jackrabbit users ask to the dev team to make a tutorial on OCM");
+
+        ocm.insert(pressRelease);
+        ocm.save();
+
+// Retrieve
+        System.out.println("Retrieve a press release from the repository");
+        pressRelease = (PressRelease) ocm.getObject("/newtutorial");
+        System.out.println("PressRelease title : " + pressRelease.getTitle());
+
+// Delete
+        System.out.println("Remove a press release from the repository");
+        ocm.remove(pressRelease);
+        ocm.save();
     }
 
     public static void save() throws Exception {
