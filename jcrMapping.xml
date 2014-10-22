@@ -1,0 +1,8 @@
+<class-descriptor
+        className="zhou.Asset"
+        jcrType="nt:unstructured" >
+    <field-descriptor fieldName="path" path="true" />
+    <bean-descriptor
+            fieldName="entity"
+            converter="org.apache.jackrabbit.ocm.persistence.beanconverter.impl.ParentBeanConverterImpl" />
+</class-descriptor>

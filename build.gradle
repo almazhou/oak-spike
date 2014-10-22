@@ -32,8 +32,8 @@ dependencies {
     compile 'org.apache.jackrabbit:oak-jcr:1.0.0'
     compile 'javax.jcr:jcr:2.0'
     compile 'org.apache.jackrabbit:oak-mongomk:0.8'
-    compile 'org.apache.jackrabbit:oak-jcr:0.10'
-    compile 'org.apache.jackrabbit:jackrabbit-ocm:1.5.0'
+    compile 'org.apache.jackrabbit:oak-jcr:1.1.1'
+    compile 'org.apache.jackrabbit:jackrabbit-ocm:1.5.3'
     compile 'org.jcrom:jcrom:2.1.0'
 
     testCompile("junit:junit:$junitVersion") {

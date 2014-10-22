@@ -8,12 +8,11 @@ import org.apache.jackrabbit.ocm.mapper.Mapper;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.AnnotationMapperImpl;
 import org.jcrom.Jcrom;
 import sun.net.www.MimeTable;
+import zhou.Asset;
+import zhou.Entity;
 
 import javax.jcr.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class OakDemo {
@@ -21,14 +20,40 @@ public class OakDemo {
         save();
         saveFile();
         useJcrom();
+        useBinary();
         Session session = getSession();
 
         List<Class> classes = new ArrayList<Class>();
         classes.add(PressRelease.class); // Call this method for each persistent class
+        classes.add(Asset.class); // Call this method for each persistent class
+        classes.add(Entity.class); // Call this method for each persistent class
+
+        String[] files = {
+                "jcrMapping.xml"
+        };
 
         Mapper mapper = new AnnotationMapperImpl(classes);
         ObjectContentManager ocm =  new ObjectContentManagerImpl(session, mapper);
 
+
+        savePressRelease(ocm);
+
+        saveAsset(ocm);
+    }
+
+    private static void saveAsset(ObjectContentManager ocm) {
+        Asset asset = new Asset();
+        asset.setPath("/asset");
+        asset.setEntity(new Entity());
+        ocm.insert(asset);
+        ocm.save();
+        Asset ocmAsset = (Asset) ocm.getObject("/asset");
+
+        Entity entity = ocmAsset.getEntity();
+        System.out.println(entity.getPath());
+    }
+
+    private static void savePressRelease(ObjectContentManager ocm) {
         System.out.println("Insert a press release in the repository");
         PressRelease pressRelease = new PressRelease();
         pressRelease.setPath("/newtutorial");
@@ -119,6 +144,30 @@ public class OakDemo {
 
         System.out.println(page.getId());
         System.out.println(page1.getId());
+    }
+
+    public static void useBinary() throws RepositoryException, IOException, ClassNotFoundException {
+        Session session = getSession();
+
+        Node rootNode = session.getRootNode();
+
+        Node binary = rootNode.addNode("binary");
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("page",new Page(5));
+
+        OutputStream serialize = Serializer.serialize(map);
+
+//        binary.setProperty("map", (Binary) serialize);
+
+        session.save();
+
+//        InputStream stream = rootNode.getNode("binary").getProperty("map").getBinary().getStream();
+//
+//        Object deserialize = Serializer.deserialize(stream);
+//
+//        System.out.println(deserialize);
+
     }
 
 }

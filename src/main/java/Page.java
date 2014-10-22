@@ -1,8 +1,10 @@
-import org.jcrom.annotations.JcrName;
-import org.jcrom.annotations.JcrPath;
-import org.jcrom.annotations.JcrProperty;
+import org.jcrom.annotations.*;
 
-public class Page {
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Page implements Serializable {
     @JcrName
     private String name;
     @JcrPath
@@ -10,10 +12,15 @@ public class Page {
     @JcrProperty
     private int id;
 
+    @JcrProperty
+    private Map<String,String> map;
+
     public Page(int id) {
         this.id = id;
         this.name = "jcrom";
         this.path = "/jcrom";
+        map = new HashMap<String,String>();
+        map.put("whatever","map");
     }
 
     public Page() {
