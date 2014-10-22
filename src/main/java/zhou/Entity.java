@@ -5,15 +5,18 @@ import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
 
 import java.util.List;
+import java.util.Map;
 
 @Node
 public class Entity {
     @Field(path=true)
     private String path;
 
-
     @Collection
     private List<Entity> subEntities;
+
+    @Collection
+    private Map<String,Entity> entityMap;
 
     public Entity() {
     }
@@ -36,5 +39,13 @@ public class Entity {
 
     public void setSubEntities(List<Entity> subEntities) {
         this.subEntities = subEntities;
+    }
+
+    public Map<String, Entity> getEntityMap() {
+        return entityMap;
+    }
+
+    public void setEntityMap(Map<String, Entity> entityMap) {
+        this.entityMap = entityMap;
     }
 }

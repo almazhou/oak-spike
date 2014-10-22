@@ -45,6 +45,9 @@ public class OakDemo {
         Asset asset = new Asset();
         asset.setPath("/asset");
         Entity entity1 = new Entity();
+        Map<String, Entity> map = new HashMap<String, Entity>();
+        map.put("hasmap", new Entity());
+        entity1.setEntityMap(map);
         asset.setEntity(entity1);
         List<Entity> entities = new ArrayList<Entity>();
         entities.add(new Entity());
