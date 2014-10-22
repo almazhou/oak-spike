@@ -1,13 +1,19 @@
 package zhou;
 
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Collection;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
+
+import java.util.List;
 
 @Node
 public class Entity {
     @Field(path=true)
     private String path;
 
+
+    @Collection
+    private List<Entity> subEntities;
 
     public Entity() {
     }
@@ -22,5 +28,13 @@ public class Entity {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public List<Entity> getSubEntities() {
+        return subEntities;
+    }
+
+    public void setSubEntities(List<Entity> subEntities) {
+        this.subEntities = subEntities;
     }
 }

@@ -44,16 +44,17 @@ public class OakDemo {
     private static void saveAsset(ObjectContentManager ocm) {
         Asset asset = new Asset();
         asset.setPath("/asset");
-        asset.setEntity(new Entity());
+        Entity entity1 = new Entity();
+        asset.setEntity(entity1);
         List<Entity> entities = new ArrayList<Entity>();
         entities.add(new Entity());
-        asset.setSubEntities(entities);
+        entity1.setSubEntities(entities);
         ocm.insert(asset);
         ocm.save();
         Asset ocmAsset = (Asset) ocm.getObject("/asset");
 
         Entity entity = ocmAsset.getEntity();
-        List<Entity> subEntities = ocmAsset.getSubEntities();
+        List<Entity> subEntities = ocmAsset.getEntity().getSubEntities();
         System.out.println(entity.getPath());
     }
 
