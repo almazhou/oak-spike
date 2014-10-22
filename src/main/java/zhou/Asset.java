@@ -1,8 +1,11 @@
 package zhou;
 
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Bean;
+import org.apache.jackrabbit.ocm.mapper.impl.annotation.Collection;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Field;
 import org.apache.jackrabbit.ocm.mapper.impl.annotation.Node;
+
+import java.util.List;
 
 @Node
 public class Asset {
@@ -12,6 +15,9 @@ public class Asset {
 
     @Bean
     private Entity entity;
+
+    @Collection
+    private List<Entity> subEntities;
 
     public Asset() {
     }
@@ -30,5 +36,13 @@ public class Asset {
 
     public void setEntity(Entity entity) {
         this.entity = entity;
+    }
+
+    public List<Entity> getSubEntities() {
+        return subEntities;
+    }
+
+    public void setSubEntities(List<Entity> subEntities) {
+        this.subEntities = subEntities;
     }
 }
